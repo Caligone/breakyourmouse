@@ -1,15 +1,22 @@
 extends layout
 
 block content
+  div(id="bluealert", class="alert alert-info alert-dismissable")
+    button(type="button", class="close", data-dismiss="alert") &times;
+    strong Blue team wins !
+  div(id="redalert", class="alert alert-danger alert-dismissable")
+    button(type="button", class="close", data-dismiss="alert") &times;
+    strong Red team wins !
+
   h1= title
   p(class="lead", id="lead") Just click and win
   div
     button(id="team1", type="button", class="btn btn-info", disabled="true") Team 1
     em(id="nbTeam1")
     div(class="progress progress-striped active")
-      div(class="progress-bar progress-bar-info", id="score1", role="progressbar", style="width: 45%")
+      div(class="progress-bar progress-bar-info", id="score1", role="progressbar", style="width: 50%")
   div
     button(id="team2", type="button", class="btn btn-danger", disabled="true") Team 2
     span(id="nbTeam2")
     div(class="progress progress-striped active")
-      div(class="progress-bar progress-bar-danger", id="score2", role="progressbar", style="width: 45%")
+      div(class="progress-bar progress-bar-danger", id="score2", role="progressbar", style="width: 50%")
