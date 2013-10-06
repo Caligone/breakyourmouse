@@ -43,9 +43,12 @@ var scoreTeam2 = 0;
 var playersTeam1 = 0;
 var playersTeam2 = 0;
 var pause = false;
+var players = [];
 io.sockets.on('connection', function(socket) {
 	if (playersTeam1 > playersTeam2) {
 		playersTeam2++;
+		players[socket.id] = 2;
+		console.log("Balancing player " + socket.id + " in team " + players[socket.id]);
 		socket.emit('autobalancing', {
 			team: 2
 		});
@@ -55,6 +58,8 @@ io.sockets.on('connection', function(socket) {
 		});
 	} else {
 		playersTeam1++;
+		players[socket.id] = 1;
+		console.log("Balancing player " + socket.id + " in team " + players[socket.id]);
 		socket.emit('autobalancing', {
 			team: 1
 		});
@@ -63,6 +68,7 @@ io.sockets.on('connection', function(socket) {
 			score2: scoreTeam2
 		});
 	}
+
 	io.sockets.emit('refreshteam', {
 		team1: playersTeam1,
 		team2: playersTeam2
@@ -105,7 +111,7 @@ io.sockets.on('connection', function(socket) {
 		if (100 <= scoreTeam2) {
 			pause = true;
 			io.sockets.emit('end', {
-				win: 1
+				win: 2
 			});
 			setTimeout(function() {
 				pause = false;
@@ -116,7 +122,7 @@ io.sockets.on('connection', function(socket) {
 	socket.on('dec1', function(socket) {
 		if (pause)
 			return;
-		if (0 < scoreTeam1 - 1)
+		if (0 < scoreTeam1)
 			scoreTeam1--;
 		io.sockets.emit('refreshscore', {
 			score1: scoreTeam1,
@@ -127,11 +133,25 @@ io.sockets.on('connection', function(socket) {
 	socket.on('dec2', function(socket) {
 		if (pause)
 			return;
-		if (0 < scoreTeam2 - 1)
+		if (0 < scoreTeam2)
 			scoreTeam2--;
 		io.sockets.emit('refreshscore', {
 			score1: scoreTeam1,
 			score2: scoreTeam2
+		});
+	});
+
+	socket.on('disconnect', function() {
+		if (players[socket.id] == 1) {
+			playersTeam1--;
+		} else {
+			playersTeam2--;
+		}
+		delete players[socket.id];
+
+		io.sockets.emit('refreshteam', {
+			team1: playersTeam1,
+			team2: playersTeam2
 		});
 	});
 });

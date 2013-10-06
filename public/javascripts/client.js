@@ -4,7 +4,7 @@ $(document).ready(function() {
 	$("#bluealert").hide();
 	$("#redalert").hide();
 
-	var socket = io.connect('http://localhost:3000');
+	var socket = io.connect("http://"+window.location.hostname+":3000");
 	socket.emit('connection');
 
 	socket.on('autobalancing', function(data) {
