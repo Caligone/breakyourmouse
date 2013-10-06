@@ -1,18 +1,15 @@
 extends layout
 
 block content
-  div(id="bluealert", class="alert alert-info alert-dismissable")
-    button(type="button", class="close", data-dismiss="alert") &times;
+  div(id="bluealert", class="pull-right alert alert-info alert-dismissable")
     strong Blue team wins !
-  div(id="redalert", class="alert alert-danger alert-dismissable")
-    button(type="button", class="close", data-dismiss="alert") &times;
+  div(id="redalert", class="pull-right alert alert-danger alert-dismissable")
     strong Red team wins !
 
-  h1= title
-  p(class="lead", id="lead") Just click and win
+  h1(id="title")= title
   div
     button(id="team1", type="button", class="btn btn-info btn-lg", disabled="true") Team 1
-    em(id="nbTeam1")
+    span(id="nbTeam1")
     div(class="progress progress-striped active")
       div(class="progress-bar progress-bar-info", id="score1", role="progressbar", style="width: 50%")
   div
@@ -20,3 +17,28 @@ block content
     span(id="nbTeam2")
     div(class="progress progress-striped active")
       div(class="progress-bar progress-bar-danger", id="score2", role="progressbar", style="width: 50%")
+
+  div
+    table(class="table")
+      tr
+        th
+        th Wins*
+        th Defeats*
+      tr 
+        th Blue
+        td(id="blueWins") 0
+        td(id="blueDefeats") 0
+      tr
+        th Red
+        td(id="redWins") 0
+        td(id="redDefeats") 0
+
+  p
+    em *Since the last reboot
+
+  footer(class="pull-right") Made by 
+   a(href="http://caligone.fr") Caligone
+   |  and 
+   a(href="http://nodejs.org") NodeJS
+
+

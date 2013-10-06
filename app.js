@@ -42,6 +42,10 @@ var scoreTeam1 = 0;
 var scoreTeam2 = 0;
 var playersTeam1 = 0;
 var playersTeam2 = 0;
+var winsTeam1 = 0;
+var winsTeam2 = 0;
+var defeatsTeam1 = 0;
+var defeatsTeam2 = 0;
 var pause = false;
 var players = [];
 io.sockets.on('connection', function(socket) {
@@ -74,6 +78,13 @@ io.sockets.on('connection', function(socket) {
 		team2: playersTeam2
 	});
 
+	io.sockets.emit('refreshtotalscore', {
+		winsTeam1: winsTeam1,
+		winsTeam2: winsTeam2,
+		defeatsTeam1: defeatsTeam1,
+		defeatsTeam2: defeatsTeam2
+	});
+
 	socket.on('inc1', function(socket) {
 		if (pause)
 			return;
@@ -87,6 +98,8 @@ io.sockets.on('connection', function(socket) {
 			io.sockets.emit('end', {
 				win: 1
 			});
+			winsTeam1++;
+			defeatsTeam2++;
 			setTimeout(function() {
 				scoreTeam1 = 0;
 				scoreTeam2 = 0;
@@ -97,6 +110,12 @@ io.sockets.on('connection', function(socket) {
 				});
 				pause = false;
 			}, 3000);
+			io.sockets.emit('refreshtotalscore', {
+				winsTeam1: winsTeam1,
+				winsTeam2: winsTeam2,
+				defeatsTeam1: defeatsTeam1,
+				defeatsTeam2: defeatsTeam2
+			});
 		}
 	});
 
@@ -113,9 +132,24 @@ io.sockets.on('connection', function(socket) {
 			io.sockets.emit('end', {
 				win: 2
 			});
+			winsTeam2++;
+			defeatsTeam1++;
 			setTimeout(function() {
+				scoreTeam1 = 0;
+				scoreTeam2 = 0;
+
+				io.sockets.emit('refreshscore', {
+					score1: scoreTeam1,
+					score2: scoreTeam2
+				});
 				pause = false;
 			}, 3000);
+			io.sockets.emit('refreshtotalscore', {
+				winsTeam1: winsTeam1,
+				winsTeam2: winsTeam2,
+				defeatsTeam1: defeatsTeam1,
+				defeatsTeam2: defeatsTeam2
+			});
 		}
 	});
 

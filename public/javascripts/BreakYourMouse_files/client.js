@@ -30,8 +30,8 @@ $(document).ready(function() {
 	});
 
 	socket.on('refreshteam', function(data) {
-		$("#nbTeam1").html(" <b>"+data.team1+"</b> players");
-		$("#nbTeam2").html(" <b>"+data.team2+"</b> players");
+		$("#nbTeam1").html(data.team1+" players");
+		$("#nbTeam2").html(data.team2+" players");
 
 	});
 
